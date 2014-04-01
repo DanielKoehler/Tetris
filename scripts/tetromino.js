@@ -61,8 +61,8 @@ Tetromino.prototype.setType = function(type) {
 		case "tee":
 			this.colour = "#9b59b6";
 			this.matrix  = [
-				[0,1,1],
-				[1,1,0],
+				[0,1,0],
+				[1,1,1],
 			];
 			break;
 		case "skew":
