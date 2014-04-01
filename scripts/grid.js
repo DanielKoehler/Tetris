@@ -47,7 +47,7 @@ Grid.prototype.dropTetrominoWithId = function(id){
 		this.ungridTetromino(id);
 		this.gridTetromino(id);
 	} else {
-		tetromino.isMoveable = false;
+		tetromino.isMoveable -= 1;
 	}
 }
 
@@ -74,6 +74,22 @@ Grid.prototype.moveRightTetrominoWithId = function(id){
 		return false;
 
 	tetromino.x += tetromino.volosity;
+
+	if(this.tetrominoCanBePushedToGrid(tetromino, id)){
+		this.ungridTetromino(id);
+		this.gridTetromino(id);
+	} else {
+		tetromino.x -= tetromino.volosity;
+	}
+	return true;
+}
+
+Grid.prototype.rotateTetrominoWithId = function(id){
+
+	if((tetromino = this.getTetrominoWithId(id)) == false)
+		return false;
+
+	tetromino.rotateRight();
 
 	if(this.tetrominoCanBePushedToGrid(tetromino, id)){
 		this.ungridTetromino(id);

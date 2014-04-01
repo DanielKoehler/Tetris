@@ -5,7 +5,6 @@ var Tetris = function(container)
 	this.tileSize = 30;
 	this.columns = 10;
 	this.rows = 20;
-
 	this.width = this.tileSize * this.columns;
 	this.height = this.tileSize * this.rows;
 
@@ -21,15 +20,17 @@ var Tetris = function(container)
 		this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);               
 	}
 
-	this.matrixCompliment = [];
-	window.addEventListener('keydown', function(event) {self.keyPressHandler(event)}, false);
+	// this.matrixCompliment = [];
+	this.pressedkeys = [];
+	window.addEventListener('keydown', function(event) {self.keyDownHandler(event)}, false);
+	window.addEventListener('keyup', function(event) {self.keyUpHandler(event)}, false);
 
 };
 
 Tetris.prototype.start = function()
 {
 
-	clearTimeout(this.timer);
+	clearTimeout(this.renderTimer);
 
 	this.grid = new Grid(this.columns, this.rows);
 	this.target = this.grid.addTetromino(new Tetromino(0, 0));
@@ -48,7 +49,7 @@ Tetris.prototype.mainloop = function()
 	this.blit();
 	// Detect Colsions
 
-	this.timer = setTimeout(function(){self.mainloop();}, 100);
+	this.renderTimer = setTimeout(function(){self.mainloop();}, 250);
 }
 
 Tetris.prototype.equaliseTetrominos = function()
@@ -88,32 +89,61 @@ Tetris.prototype.drawTile = function(x, y, colour){
 
 } 
 
-Tetris.prototype.keyPressHandler = function (event) 
+Tetris.prototype.keyUpHandler = function (event) 
 {
 
 	var validBindings = [32, 37, 38, 39, 40];
 
 	if(validBindings.contains(event.keyCode))
 		event.preventDefault();	
+		this.pressedkeys.splice(this.pressedkeys.indexOf(event.keyCode), 1);
 
-	switch(event.keyCode){
-		case 32:
-			this.keySpace();
-		break;
-		case 37:
-			event.preventDefault();
-			this.keyLeft();
-		break;
-		case 38:
-			this.keyUp();
-		break;
-		case 39:
-			this.keyRight();
-		break;
-		case 40:
-			this.keyDown();
-		break;	
-	}	
+	if(!this.pressedkeys.length)
+		clearTimeout(this.keyLoopTimer);	
+}
+
+Tetris.prototype.keyDownHandler = function (event) 
+{
+	var validBindings = [32, 37, 38, 39, 40];
+
+	if(validBindings.contains(event.keyCode) && !this.pressedkeys.contains(event.keyCode)){
+		event.preventDefault();	
+		this.pressedkeys.push(event.keyCode);
+	}
+
+	this.keyLoop();
+}	
+
+// The keydown event simply doesn't fire often enough, 
+// we're going to have to call the methods ourselfs and just wait for key up.
+
+Tetris.prototype.keyLoop = function(){
+
+	var self = this;
+	for (key in this.pressedkeys){
+		switch(this.pressedkeys[key]){
+			case 32:
+				this.keySpace();
+				break;
+			case 37:
+				this.keyLeft();
+				break;
+			case 38:
+				this.keyUp();
+				this.pressedkeys.splice(this.pressedkeys.indexOf(38), 1);
+				break;
+			case 39:
+				this.keyRight();
+				break;
+			case 40:
+				this.keyDown();
+				this.pressedkeys.splice(this.pressedkeys.indexOf(40), 1);
+				break;	
+		}
+	}
+
+	clearTimeout(this.keyLoopTimer);
+	this.keyLoopTimer = setTimeout(function(){self.keyLoop();}, 50);
 }
 
 Tetris.prototype.keySpace = function()
@@ -123,12 +153,16 @@ Tetris.prototype.keySpace = function()
 
 Tetris.prototype.keyDown = function()
 {
-	// Up - rotate right
+	
+	// Down falling speed
 }
 
 Tetris.prototype.keyUp = function()
 {
-	// Down falling speed
+	// Up - rotate right
+	if(this.grid.rotateTetrominoWithId(this.target)){
+		this.blit();	
+	}
 }
 
 Tetris.prototype.keyLeft = function()

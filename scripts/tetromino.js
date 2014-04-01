@@ -6,8 +6,9 @@ var Tetromino = function(x, y,type) {
 	this.x = x;
 	this.y = y;
 
-	this.isMoveable = true;
+	this.isMoveable = 2;
 	this.colour = "#FFFFFF";
+	// this.names = ["straight"];
 	this.names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
 
 	if(type == null || !this.names.contains(type))
@@ -28,6 +29,7 @@ Tetromino.prototype.getMatrix = function() {
 Tetromino.prototype.setType = function(type) {
 	
 	// Top left origin
+	// console.log(type);
 	switch (type){
 		case "square":
 			this.colour = "#f39c12";
@@ -69,6 +71,10 @@ Tetromino.prototype.setType = function(type) {
 			this.matrix  = [
 				[1,1,0],
 				[0,1,1],
+
+				[0,1]
+				[1,1]
+				[1,0]
 			];
 			break;
 		case "straight":
@@ -81,15 +87,20 @@ Tetromino.prototype.setType = function(type) {
 }
 
 Tetromino.prototype.rotateRight = function() {
-		transfromation = [
-		  [0,-1],
-		  [-1,0],
-		];
+	 
+	this.matrix = this.transpose(this.matrix);
+	
+	for(var i = 0; i < this.matrix.length; i++){
+		this.matrix[i].reverse();
+	}
 }
 
-Tetromino.prototype.rotateRight = function() {
-		transfromation = [
-		  [0,-1],
-		  [1, 0],
-		];
+Tetromino.prototype.transpose = function(a) {
+    return Object.keys(a[0]).map(
+        function (c) { 
+        	return a.map(function (r) { 
+        		return r[c]; 
+        	}); 
+        }
+    );
 }
