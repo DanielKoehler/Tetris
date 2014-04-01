@@ -56,7 +56,7 @@ Tetris.prototype.equaliseTetrominos = function()
 		this.grid.dropTetrominoWithId(this.target);
 	} else {
 		if((this.target = this.grid.addTetromino(new Tetromino(0, 0))) == false){
-			this.finish()
+			this.faillevel()
 		}
 	}
 }
@@ -64,7 +64,8 @@ Tetris.prototype.equaliseTetrominos = function()
 Tetris.prototype.finish = function()
 {
 	clearInterval(this.renderTimer);
-	console.log("Game Over");
+	console.log("Level Over");
+	this.start()
 }
 
 Tetris.prototype.blit = function()
