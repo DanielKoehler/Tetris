@@ -7,6 +7,10 @@ Array.prototype.contains = function ( needle ) {
 	return false;
 }
 
+Array.prototype.insert = function (index, item) {
+  this.splice(index, 0, item);
+};
+
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   if (w < 2 * r) r = w / 2;
   if (h < 2 * r) r = h / 2;

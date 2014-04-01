@@ -6,7 +6,7 @@ var Tetromino = function(x, y,type) {
 	this.x = x;
 	this.y = y;
 
-	this.isMoveable = 2;
+	this.isMoveable = true;
 	this.colour = "#FFFFFF";
 	// this.names = ["straight"];
 	this.names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
@@ -71,10 +71,6 @@ Tetromino.prototype.setType = function(type) {
 			this.matrix  = [
 				[1,1,0],
 				[0,1,1],
-
-				[0,1]
-				[1,1]
-				[1,0]
 			];
 			break;
 		case "straight":
@@ -93,6 +89,13 @@ Tetromino.prototype.rotateRight = function() {
 	for(var i = 0; i < this.matrix.length; i++){
 		this.matrix[i].reverse();
 	}
+}
+
+Tetromino.prototype.rotateLeft = function() {
+	 
+	this.matrix = this.transpose(this.matrix);
+	this.matrix.reverse();
+	
 }
 
 Tetromino.prototype.transpose = function(a) {

@@ -4,7 +4,7 @@ var Tetris = function(container)
 
 	this.tileSize = 30;
 	this.columns = 10;
-	this.rows = 20;
+	this.rows = 16;
 	this.width = this.tileSize * this.columns;
 	this.height = this.tileSize * this.rows;
 
@@ -30,26 +30,27 @@ var Tetris = function(container)
 Tetris.prototype.start = function()
 {
 
-	clearTimeout(this.renderTimer);
+	clearInterval(this.renderTimer);
+	
+	var self = this;
 
 	this.grid = new Grid(this.columns, this.rows);
 	this.target = this.grid.addTetromino(new Tetromino(0, 0));
 
 	this.mainloop();
+	this.renderTimer = setInterval(function(){self.mainloop();}, 250);
 
 }
 
 Tetris.prototype.mainloop = function()
 {
 
-	var self = this;
+	
 
 	this.equaliseTetrominos();
 	// Blit
 	this.blit();
 	// Detect Colsions
-
-	this.renderTimer = setTimeout(function(){self.mainloop();}, 250);
 }
 
 Tetris.prototype.equaliseTetrominos = function()
@@ -57,13 +58,16 @@ Tetris.prototype.equaliseTetrominos = function()
 	if(this.grid.getTetrominoWithId(this.target).isMoveable){
 		this.grid.dropTetrominoWithId(this.target);
 	} else {
-		this.target = this.grid.addTetromino(new Tetromino(0, 0));
+		if((this.target = this.grid.addTetromino(new Tetromino(0, 0))) == false){
+			this.finish()
+		}
 	}
 }
 
 Tetris.prototype.finish = function()
 {
-
+	clearInterval(this.renderTimer);
+	console.log("Game Over");
 }
 
 Tetris.prototype.blit = function()
@@ -98,18 +102,26 @@ Tetris.prototype.keyUpHandler = function (event)
 		event.preventDefault();	
 		this.pressedkeys.splice(this.pressedkeys.indexOf(event.keyCode), 1);
 
-	if(!this.pressedkeys.length)
-		clearTimeout(this.keyLoopTimer);	
+	if(!this.pressedkeys.length){
+		clearTimeout(this.keyLoopTimer);
+		this.keyLoopTimer = false;
+	}
 }
 
 Tetris.prototype.keyDownHandler = function (event) 
 {
 	var validBindings = [32, 37, 38, 39, 40];
+	var self = this;
 
 	if(validBindings.contains(event.keyCode) && !this.pressedkeys.contains(event.keyCode)){
 		event.preventDefault();	
 		this.pressedkeys.push(event.keyCode);
 	}
+
+
+
+	if(!this.keyLoopTimer)		
+		this.keyLoopTimer = setInterval(function(){self.keyLoop();}, 50);
 
 	this.keyLoop();
 }	
@@ -119,7 +131,7 @@ Tetris.prototype.keyDownHandler = function (event)
 
 Tetris.prototype.keyLoop = function(){
 
-	var self = this;
+	
 	for (key in this.pressedkeys){
 		switch(this.pressedkeys[key]){
 			case 32:
@@ -140,10 +152,7 @@ Tetris.prototype.keyLoop = function(){
 				this.pressedkeys.splice(this.pressedkeys.indexOf(40), 1);
 				break;	
 		}
-	}
-
-	clearTimeout(this.keyLoopTimer);
-	this.keyLoopTimer = setTimeout(function(){self.keyLoop();}, 50);
+	}	
 }
 
 Tetris.prototype.keySpace = function()
@@ -153,7 +162,9 @@ Tetris.prototype.keySpace = function()
 
 Tetris.prototype.keyDown = function()
 {
-	
+	if(this.grid.dropTetrominoWithId(this.target)){
+		this.blit();
+	}
 	// Down falling speed
 }
 

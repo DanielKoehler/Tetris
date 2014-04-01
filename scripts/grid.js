@@ -47,8 +47,11 @@ Grid.prototype.dropTetrominoWithId = function(id){
 		this.ungridTetromino(id);
 		this.gridTetromino(id);
 	} else {
-		tetromino.isMoveable -= 1;
+		tetromino.isMoveable = false;
+		this.checkBlockIntergrity();
 	}
+
+	return true
 }
 
 Grid.prototype.moveLeftTetrominoWithId = function(id){
@@ -95,7 +98,7 @@ Grid.prototype.rotateTetrominoWithId = function(id){
 		this.ungridTetromino(id);
 		this.gridTetromino(id);
 	} else {
-		tetromino.x -= tetromino.volosity;
+		tetromino.rotateLeft();
 	}
 	return true;
 }
@@ -155,6 +158,31 @@ Grid.prototype.tetrominoIsConfined = function(tetromino){
 	}
 
 	return true;
+}
+
+Grid.prototype.checkBlockIntergrity = function(){
+
+	
+
+	for (var row = 0; row < this.grid.length; row++) 
+	{
+
+		total = 0;
+
+		for (var column = 0; column < this.grid[row].length; column++) 
+		{
+			
+			total += this.grid[row][column] ? 1 : 0;
+
+		}
+
+		if (total == 10){
+			 this.grid.splice(row,1);
+			 this.grid.insert(0,[0,0,0,0,0,0,0,0,0,0]);
+		}
+
+
+	}
 }
 
 Grid.prototype.tetrominoCanBePushedToGrid = function(tetromino, id){
