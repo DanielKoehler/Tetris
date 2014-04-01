@@ -16,11 +16,10 @@ var Tetris = function(container)
 		container.width = this.width * window.devicePixelRatio;
 		container.style.height = this.height + "px";
 		container.height = this.height * window.devicePixelRatio;
-
-		this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);               
+		this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);      
+		         
 	}
 
-	// this.matrixCompliment = [];
 	this.pressedkeys = [];
 	window.addEventListener('keydown', function(event) {self.keyDownHandler(event)}, false);
 	window.addEventListener('keyup', function(event) {self.keyUpHandler(event)}, false);
@@ -38,14 +37,12 @@ Tetris.prototype.start = function()
 	this.target = this.grid.addTetromino(new Tetromino(0, 0));
 
 	this.mainloop();
-	this.renderTimer = setInterval(function(){self.mainloop();}, 250);
+	this.renderTimer = setInterval(function(){self.mainloop();}, 400);
 
 }
 
 Tetris.prototype.mainloop = function()
 {
-
-	
 
 	this.equaliseTetrominos();
 	// Blit
@@ -121,13 +118,13 @@ Tetris.prototype.keyDownHandler = function (event)
 
 
 	if(!this.keyLoopTimer)		
-		this.keyLoopTimer = setInterval(function(){self.keyLoop();}, 50);
+		this.keyLoopTimer = setInterval(function(){self.keyLoop();}, 100);
 
 	this.keyLoop();
 }	
 
 // The keydown event simply doesn't fire often enough, 
-// we're going to have to call the methods ourselfs and just wait for key up.
+// we're going to have to call the methods ourselves and just wait for key up.
 
 Tetris.prototype.keyLoop = function(){
 
@@ -158,6 +155,7 @@ Tetris.prototype.keyLoop = function(){
 Tetris.prototype.keySpace = function()
 {
 	// Space hard drop
+	this.grid.hardDropTetrominoWithId(this.target);
 }
 
 Tetris.prototype.keyDown = function()
@@ -187,9 +185,10 @@ Tetris.prototype.keyLeft = function()
 Tetris.prototype.keyRight = function()
 {
 	// Right - move right
-	if(this.grid.moveRightTetrominoWithId(this.target)){
-		this.blit();
-	}
+	this.grid.moveRightTetrominoWithId(this.target)
+	this.blit();
+	this.grid.moveRightTetrominoWithId(this.target)
+	this.blit();
 }
 
 var tetris = new Tetris(document.getElementById('tetris'));

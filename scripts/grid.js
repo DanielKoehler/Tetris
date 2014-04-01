@@ -10,7 +10,6 @@ var Grid = function(columns, rows)
 
 Grid.prototype.clear = function() 
 {
-	
 	this.grid = Array(this.rows);
 
 	for (var i = 0; i < this.rows; i++) 
@@ -41,7 +40,7 @@ Grid.prototype.dropTetrominoWithId = function(id){
 	if((tetromino = this.getTetrominoWithId(id)) == false)
 		return false;
 
-	tetromino.y += tetromino.volosity;
+	tetromino.y += tetromino.getVolosity();
 
 	if(this.tetrominoCanBePushedToGrid(tetromino, id)){
 		this.ungridTetromino(id);
@@ -54,18 +53,35 @@ Grid.prototype.dropTetrominoWithId = function(id){
 	return true
 }
 
+Grid.prototype.hardDropTetrominoWithId = function(id){
+
+	if((tetromino = this.getTetrominoWithId(id)) == false)
+		return false;
+
+	tetromino.y += tetromino.getVolosity();
+	 while (this.tetrominoCanBePushedToGrid(tetromino, id)) {
+		this.ungridTetromino(id);
+		this.gridTetromino(id);
+		tetromino.y += tetromino.getVolosity();
+	}
+
+	tetromino.y -= tetromino.getVolosity();
+
+	return true
+}
+
 Grid.prototype.moveLeftTetrominoWithId = function(id){
 
 	if((tetromino = this.getTetrominoWithId(id)) == false)
 		return false;
 
-	tetromino.x -= tetromino.volosity;
+	tetromino.x -= tetromino.getVolosity();
 
 	if(this.tetrominoCanBePushedToGrid(tetromino, id)){
 		this.ungridTetromino(id);
 		this.gridTetromino(id);
 	} else {
-		tetromino.x += tetromino.volosity;
+		tetromino.x += tetromino.getVolosity();
 	}
 
 	return true;
@@ -76,13 +92,13 @@ Grid.prototype.moveRightTetrominoWithId = function(id){
 	if((tetromino = this.getTetrominoWithId(id)) == false)
 		return false;
 
-	tetromino.x += tetromino.volosity;
+	tetromino.x += tetromino.getVolosity();
 
 	if(this.tetrominoCanBePushedToGrid(tetromino, id)){
 		this.ungridTetromino(id);
 		this.gridTetromino(id);
 	} else {
-		tetromino.x -= tetromino.volosity;
+		tetromino.x -= tetromino.getVolosity();
 	}
 	return true;
 }

@@ -2,16 +2,11 @@
 #tetris {
 
     margin: 0 auto 0px;
-    
-
+  
     display: block;
     
-    
-    
-
     border-radius: 10px;
     
-
     border: 1px solid #ecf0f1;
 
     padding: 10px;
@@ -360,7 +355,7 @@ footer span.octocat {
 /* content */
 
 body {
-  background: #2c3e50;
+  background: #ffffff;
   font: normal normal 15px/1.5 Georgia, Palatino,” Palatino Linotype”, Times, “Times New Roman”, serif;
   color: #544943;
   -webkit-font-smoothing: antialiased;

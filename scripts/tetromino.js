@@ -8,8 +8,8 @@ var Tetromino = function(x, y,type) {
 
 	this.isMoveable = true;
 	this.colour = "#FFFFFF";
-	// this.names = ["straight"];
-	this.names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
+	this.names = ["square"];
+	// this.names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
 
 	if(type == null || !this.names.contains(type))
 		type = this.names[Math.floor(Math.random() * this.names.length)];
