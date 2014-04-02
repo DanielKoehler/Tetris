@@ -3,7 +3,7 @@ var Tetromino = function(x, y,type) {
 	this.matrix = false;
 	this.volosity = 1;
 
-	this.x = 1 + Math.floor(Math.random() * 8);
+	this.x = 1 + Math.floor(Math.random() * 5);
 	this.y = y;
 
 	this.isMoveable = true;
