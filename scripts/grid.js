@@ -132,7 +132,7 @@ Grid.prototype.gridTetromino = function(id)
 		for (var column = 0; column < tetromino.matrix[row].length; column++) 
 		{
 			if (tetromino.matrix[row][column])
-				this.grid[parseInt(tetromino.y / this.tileSize + row)][parseInt(tetromino.x / this.tileSize + column)] = id;
+				this.grid[parseInt(tetromino.y / this.tileSize + row)][parseInt(tetromino.x / this.tileSize + column)] = true;
 		}
 	}
 }
@@ -161,7 +161,7 @@ Grid.prototype.getTetrominoWithPosition = function(row,column)
 Grid.prototype.getTetrominoWithId = function(id)
 {
 	// ID is NOT zero based.
-	if(this.tetrominos.length >= id)
+	if(this.tetrominos.length >= id && this.tetrominos[id - 1] != undefined)
 		return this.tetrominos[id - 1]; 
 	return false;
 }
