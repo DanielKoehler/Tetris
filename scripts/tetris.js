@@ -152,7 +152,7 @@ Tetris.prototype.drawTile = function(x, y, colour){
 Tetris.prototype.keyUpHandler = function (event) 
 {
 
-	var validBindings = [32, 37, 38, 39, 40];
+	var validBindings = [37, 38, 39];
 
 	if(validBindings.contains(event.keyCode))
 		event.preventDefault();	
