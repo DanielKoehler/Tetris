@@ -56,10 +56,10 @@ Grid.prototype.get = function(y, x)
 Grid.prototype.addTetromino = function(tetromino) 
 {	
 
-	var id = this.tetrominos.push(tetromino);
-
 	if(!this.tetrominoCanBePushedToGrid(tetromino))
 		return false
+
+	var id = this.tetrominos.push(tetromino);
 
 	// console.log("Added tetromino, total tetrominos ever on grid = ", this.tetrominos.length)
 
