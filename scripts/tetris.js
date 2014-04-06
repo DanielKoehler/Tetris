@@ -33,10 +33,11 @@ Tetris.prototype.start = function()
 	
 	var self = this;
 
-	this.grid = new Grid(this.columns, this.rows, this.tileSize);
+	this.grid = new Grid(this.columns, this.rows);
+	this.target = this.grid.addTetromino(new Tetromino(0, 0));
 
 	this.mainloop();
-	this.renderTimer = setInterval(function(){self.mainloop();}, 0);
+	this.renderTimer = setInterval(function(){self.mainloop();}, 400);
 
 }
 
@@ -51,29 +52,19 @@ Tetris.prototype.mainloop = function()
 
 Tetris.prototype.equaliseTetrominos = function()
 {
-	
-	// console.log(this.target);
-
-	if(this.target != undefined && this.grid.getTetrominoWithId(this.target).isMoveable){
+	if(this.grid.getTetrominoWithId(this.target).isMoveable){
 		this.grid.dropTetrominoWithId(this.target);
 	} else {
-		if((this.target = this.grid.addTetromino(new Tetromino(0, 0, null, this.tileSize))) == false){
+		if((this.target = this.grid.addTetromino(new Tetromino(0, 0))) == false){
 			this.faillevel()
 		}
 	}
 }
 
-Tetris.prototype.faillevel = function()
-{
-	clearInterval(this.renderTimer);
-	console.log("Level Over");
-	this.start()
-}
-
 Tetris.prototype.finish = function()
 {
 	clearInterval(this.renderTimer);
-	console.log("Game Over");
+	console.log("Level Over");
 	this.start()
 }
 
@@ -82,31 +73,15 @@ Tetris.prototype.blit = function()
 	// Clear UI.
 	this.ctx.clearRect ( 0 , 0 , this.width , this.height );
 
-	for (tetromino in this.grid.tetrominos){
+	for (var row = 0; row < this.rows; row++){
+		for (var column = 0; column < this.columns; column++){
+			if((tetromino = this.grid.getTetrominoWithPosition(row, column)) != false) {
 
-		var matrix = this.grid.tetrominos[tetromino].matrix;
-		var tetromino = this.grid.tetrominos[tetromino];
+				this.drawTile(column *  this.tileSize, row * this.tileSize, tetromino.colour);
 
-		// console.log(this.grid.tetrominos)
-		// console.log(matrix)
-
-		for (tileRow in matrix){
-			// console.log("t" + tetromino)
-			// console.log("tr" + tileRow)
-
-			for (tile in matrix[tileRow]){
-				if(matrix[tileRow][tile])
-					this.drawTile(tetromino.x + tile * this.tileSize, tetromino.y + tileRow * this.tileSize, tetromino.colour);
 			}
 		}
 	}
-
-	this.ctx.font = "14px 'Press Start 2P', cursive";
-	
-	this.ctx.fillStyle = "#ece4d8";
-
-	this.ctx.fillText("0",0, 14);
-	// debugger;
 }
 
 Tetris.prototype.drawTile = function(x, y, colour){

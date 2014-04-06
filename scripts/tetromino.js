@@ -1,13 +1,12 @@
-var Tetromino = function(x, y, type, size) {
+var Tetromino = function(x, y,type) {
 
 	this.matrix = false;
-	this.volosity = 2;
+	this.volosity = 1;
 
-	this.x = size * 3;
+	this.x = 1 + Math.floor(Math.random() * 5);
 	this.y = y;
 
 	this.isMoveable = true;
-	
 	this.colour = "#FFFFFF";
 	this.names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
 
@@ -25,21 +24,6 @@ Tetromino.prototype.getVolosity = function() {
 Tetromino.prototype.getMatrix = function() {
 	return this.matrix;
 }
-
-// Tetromino.prototype.getY = function() {
-// 	return this.matrix;
-// }
-// Tetromino.prototype.getY = function() {
-// 	return this.matrix;
-// }
-
-// Tetromino.prototype.setX = function() {
-// 	return this.matrix;
-// }
-
-// Tetromino.prototype.setY = function() {
-// 	return this.matrix;
-// }
 
 Tetromino.prototype.setType = function(type) {
 	
