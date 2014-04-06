@@ -166,7 +166,7 @@ Tetris.prototype.keyUpHandler = function (event)
 
 Tetris.prototype.keyDownHandler = function (event) 
 {
-	var validBindings = [32, 37, 38, 39, 40];
+	var validBindings = [ 37, 38, 39];
 	var self = this;
 
 	if(validBindings.contains(event.keyCode) && !this.pressedkeys.contains(event.keyCode)){
