@@ -235,7 +235,7 @@ Grid.prototype.confineTetromino = function(tetromino){
 	
 	if (tetromino.row + tetromino.matrix.length >= this.grid.length) {
 
-		tetromino.y = this.grid.length * this.tileSize - tetromino.matrix.length * this.tileSize;
+		tetromino.setY(this.grid.length * this.tileSize - tetromino.matrix.length * this.tileSize);
 		tetromino.isMoveable = false;
 		
 		// console.log("Tetromino hit bottom")
@@ -244,7 +244,7 @@ Grid.prototype.confineTetromino = function(tetromino){
 
 	if (tetromino.column + tetromino.matrix[0].length >= this.columns) {
 
-		tetromino.x = this.columns * this.tileSize - tetromino.matrix[0].length * this.tileSize;
+		tetromino.setX(this.columns * this.tileSize - tetromino.matrix[0].length * this.tileSize);
 		// console.log("Tetromino hit right wall")
 	
 	}	
