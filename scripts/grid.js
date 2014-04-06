@@ -312,7 +312,7 @@ Grid.prototype.tetrominoCanBePushedToGrid = function(tetromino, id){
 				var v = this.get(tetromino.row + row, tetromino.column + column);
 				// debugger;
 				
-				if(v != false && v != id && id != undefined){
+				if(v != false && v != id || id != undefined && v != false){
 					return false;
 				}
 
