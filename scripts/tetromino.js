@@ -33,13 +33,21 @@ Tetromino.prototype.getMatrix = function() {
 }
 
 Tetromino.prototype.setY = function(y) {
-	this.y += y;
+	this.y = y;
 	this.row = Math.ceil(this.y / this.size);
 }
 
 Tetromino.prototype.setX = function(x) {
-	this.x += x;
+	this.x = x;
 	this.column = parseInt(this.x / this.size);
+}
+
+Tetromino.prototype.getY = function(y) {
+	return this.y;
+}
+
+Tetromino.prototype.getX = function(x) {
+	return this.x;
 }
 
 Tetromino.prototype.getMatrix = function() {

@@ -77,13 +77,13 @@ Grid.prototype.dropTetrominoWithId = function(id){
 
 	this.ungridTetromino(tetromino);
 
-	tetromino.setY(tetromino.getVolosity());
+	tetromino.setY(tetromino.getY() + tetromino.getVolosity());
 	
 	if(!this.tetrominoCanBePushedToGrid(tetromino, id)){
 
 		// console.log("Can't be pushed")
 
-		tetromino.setY(-tetromino.getVolosity());
+		tetromino.setY(tetromino.getY() - tetromino.getVolosity());
 		tetromino.isMoveable = false;
 
 		// this.checkBlockIntergrity();
@@ -100,15 +100,15 @@ Grid.prototype.hardDropTetrominoWithId = function(id){
 	if((tetromino = this.getTetrominoWithId(id)) == false)
 		return false;
 
-	tetromino.setY(tetromino.getVolosity());
+	tetromino.setY(tetromino.getY() + tetromino.getVolosity());
 
 	while (this.tetrominoCanBePushedToGrid(tetromino, id)) {
 		this.ungridTetromino(tetromino);
 		this.gridTetromino(id);
-		tetromino.setY(tetromino.getVolosity());
+		tetromino.setY(tetromino.getY() + tetromino.getVolosity());
 	}
 
-	tetromino.setY(-tetromino.getVolosity());
+	tetromino.setY(tetromino.getY() - tetromino.getVolosity());
 
 	return true
 }
@@ -120,10 +120,10 @@ Grid.prototype.moveLeftTetrominoWithId = function(id){
 
 	this.ungridTetromino(tetromino);
 
-	tetromino.setX(-this.tileSize);
+	tetromino.setX(tetromino.getY() - this.tileSize);
 
 	if(!this.tetrominoCanBePushedToGrid(tetromino, id)){
-		tetromino.setX(this.tileSize);
+		tetromino.setX(tetromino.getY() + this.tileSize);
 	}
 
 	this.gridTetromino(id);
@@ -137,10 +137,10 @@ Grid.prototype.moveRightTetrominoWithId = function(id){
 		return false;
 
 	this.ungridTetromino(tetromino);
-	tetromino.setX(this.tileSize);
+	tetromino.setX(tetromino.getY() + this.tileSize);
 
 	if(!this.tetrominoCanBePushedToGrid(tetromino, id)){		
-		tetromino.setX(-this.tileSize);
+		tetromino.setX(tetromino.getY() - this.tileSize);
 	}
 
 	this.gridTetromino(id);
@@ -250,7 +250,7 @@ Grid.prototype.confineTetromino = function(tetromino){
 	}	
 
 	if(tetromino.x < 0){
-		tetromino.x = 0;
+		tetromino.setX(0);
 		// console.log("Tetromino hit left wall")
 	} 
 
