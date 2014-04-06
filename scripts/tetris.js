@@ -190,9 +190,9 @@ Tetris.prototype.keyLoop = function(){
 	
 	for (key in this.pressedkeys){
 		switch(this.pressedkeys[key]){
-			case 32:
-				this.keySpace();
-				break;
+			// case 32:
+			// 	this.keySpace();
+			// 	break;
 			case 37:
 				this.keyLeft();
 				break;
@@ -203,10 +203,10 @@ Tetris.prototype.keyLoop = function(){
 			case 39:
 				this.keyRight();
 				break;
-			case 40:
-				this.keyDown();
-				this.pressedkeys.splice(this.pressedkeys.indexOf(40), 1);
-				break;	
+			// case 40:
+			// 	this.keyDown();
+			// 	this.pressedkeys.splice(this.pressedkeys.indexOf(40), 1);
+			// 	break;	
 		}
 	}	
 }
