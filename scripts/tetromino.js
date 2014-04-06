@@ -1,17 +1,24 @@
-var Tetromino = function(x, y,type) {
+var names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
+
+var Tetromino = function(x, y, type, size) {
 
 	this.matrix = false;
-	this.volosity = 1;
+	this.volosity = 15;
 
-	this.x = 1 + Math.floor(Math.random() * 5);
+	this.x = size * Math.floor(Math.random() * 7);
 	this.y = y;
 
+	this.size = size;
+
+	this.row = 0;
+	this.column = parseInt(this.x / size);
+
 	this.isMoveable = true;
+	
 	this.colour = "#FFFFFF";
-	this.names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
 
 	if(type == null || !this.names.contains(type))
-		type = this.names[Math.floor(Math.random() * this.names.length)];
+		type = names[Math.floor(Math.random() * names.length)];
 		
 	this.setType(type);
 
@@ -19,6 +26,20 @@ var Tetromino = function(x, y,type) {
 
 Tetromino.prototype.getVolosity = function() {
 	return this.volosity;
+}
+
+Tetromino.prototype.getMatrix = function() {
+	return this.matrix;
+}
+
+Tetromino.prototype.setY = function(y) {
+	this.y += y;
+	this.row = Math.ceil(this.y / this.size);
+}
+
+Tetromino.prototype.setX = function(x) {
+	this.x += x;
+	this.column = parseInt(this.x / this.size);
 }
 
 Tetromino.prototype.getMatrix = function() {

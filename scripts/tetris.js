@@ -33,59 +33,117 @@ Tetris.prototype.start = function()
 	
 	var self = this;
 
-	this.grid = new Grid(this.columns, this.rows);
-	this.target = this.grid.addTetromino(new Tetromino(0, 0));
+	this.grid = new Grid(this.ctx, this.columns, this.rows, this.tileSize);
 
 	this.mainloop();
-	this.renderTimer = setInterval(function(){self.mainloop();}, 400);
+	this.renderTimer = setInterval(function(){self.mainloop();}, 1000 / 60);
 
 }
 
 Tetris.prototype.mainloop = function()
 {
 
+	// console.log('\n\n #### Mainloop #### \n\n')
 	this.equaliseTetrominos();
 	// Blit
 	this.blit();
 	// Detect Colsions
+
+	// debugger;
 }
 
 Tetris.prototype.equaliseTetrominos = function()
 {
-	if(this.grid.getTetrominoWithId(this.target).isMoveable){
+	
+	// console.log(this.target);
+	// console.log("Active tetromino", this.target);
+
+	if(this.target != undefined && this.grid.getTetrominoWithId(this.target).isMoveable){
+		// console.log("Dropping active tetromino")
 		this.grid.dropTetrominoWithId(this.target);
 	} else {
-		if((this.target = this.grid.addTetromino(new Tetromino(0, 0))) == false){
+
+		// console.log("Adding a new tetromino")
+		if((this.target = this.grid.addTetromino(new Tetromino(0, 0, null, this.tileSize))) == false){
+			// console.log("Couldn't add tetromino")
 			this.faillevel()
 		}
+
 	}
 }
 
-Tetris.prototype.finish = function()
+Tetris.prototype.faillevel = function()
 {
 	clearInterval(this.renderTimer);
 	console.log("Level Over");
 	this.start()
 }
 
+Tetris.prototype.finish = function()
+{
+	clearInterval(this.renderTimer);
+	console.log("Game Over");
+	this.start()
+}
+
 Tetris.prototype.blit = function()
 {
+
+	this.ctx.clearRect(0,0, this.width, this.height);
+	// console.log("Blitting")
 	// Clear UI.
-	this.ctx.clearRect ( 0 , 0 , this.width , this.height );
+	
 
-	for (var row = 0; row < this.rows; row++){
-		for (var column = 0; column < this.columns; column++){
-			if((tetromino = this.grid.getTetrominoWithPosition(row, column)) != false) {
+	for (tetromino in this.grid.tetrominos){
 
-				this.drawTile(column *  this.tileSize, row * this.tileSize, tetromino.colour);
+		// if(this.grid.tetrominos[tetromino]){
+
+			var matrix = this.grid.tetrominos[tetromino].matrix;
+			var tetromino = this.grid.tetrominos[tetromino];
+
+			for (tileRow in matrix){
+
+				for (tile in matrix[tileRow]){
+
+					if(matrix[tileRow][tile]){
+						this.drawTile(tetromino.x + tile * this.tileSize, tetromino.y + tileRow * this.tileSize, tetromino.colour);
+					}
+				
+				}
 
 			}
-		}
+		// }
 	}
+
+	
+	
+	// // console.log(this.grid.grid)
+	// for(var row =0; row < this.grid.get().length; row++){
+	// 	for(var tile = 0; tile < this.grid.get()[row].length; tile++){
+			
+	// 		if(this.grid.get()[row][tile]){
+	// 			// console.log("Drawing at:", row, tile)
+
+	// 			this.ctx.beginPath();
+	// 	    	this.ctx.rect(tile * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
+	// 	    	this.ctx.stroke();
+
+	// 	    }
+
+	// 	} 
+	// }
+
+	// this.ctx.font = "14px 'Press Start 2P', cursive";
+	
+	// this.ctx.fillStyle = "#ece4d8";
+
+	// this.ctx.fillText("0",0, 14);
+	// debugger;
 }
 
 Tetris.prototype.drawTile = function(x, y, colour){
 
+	this.ctx.beginPath();
 	this.ctx.fillStyle = colour;
 	this.ctx.roundRect(x + 1,y  + 1,  this.tileSize - 1,  this.tileSize - 1, 3).fill();
 
