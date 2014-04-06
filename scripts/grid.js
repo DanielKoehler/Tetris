@@ -120,10 +120,10 @@ Grid.prototype.moveLeftTetrominoWithId = function(id){
 
 	this.ungridTetromino(tetromino);
 
-	tetromino.setX(tetromino.getY() - this.tileSize);
+	tetromino.setX(tetromino.getX() - this.tileSize);
 
 	if(!this.tetrominoCanBePushedToGrid(tetromino, id)){
-		tetromino.setX(tetromino.getY() + this.tileSize);
+		tetromino.setX(tetromino.getX() + this.tileSize);
 	}
 
 	this.gridTetromino(id);
@@ -137,10 +137,10 @@ Grid.prototype.moveRightTetrominoWithId = function(id){
 		return false;
 
 	this.ungridTetromino(tetromino);
-	tetromino.setX(tetromino.getY() + this.tileSize);
+	tetromino.setX(tetromino.getX() + this.tileSize);
 
 	if(!this.tetrominoCanBePushedToGrid(tetromino, id)){		
-		tetromino.setX(tetromino.getY() - this.tileSize);
+		tetromino.setX(tetromino.getX() - this.tileSize);
 	}
 
 	this.gridTetromino(id);

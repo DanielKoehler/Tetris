@@ -42,11 +42,11 @@ Tetromino.prototype.setX = function(x) {
 	this.column = parseInt(this.x / this.size);
 }
 
-Tetromino.prototype.getY = function(y) {
+Tetromino.prototype.getY = function() {
 	return this.y;
 }
 
-Tetromino.prototype.getX = function(x) {
+Tetromino.prototype.getX = function() {
 	return this.x;
 }
 
