@@ -25,6 +25,8 @@ var Tetromino = function(x, y, type, size) {
 }
 
 Tetromino.prototype.immobilise = function() {
+
+	this.setRow(this.row);
 	this.isMoveable = false;
 }
 

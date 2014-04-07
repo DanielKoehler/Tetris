@@ -118,20 +118,20 @@ Tetris.prototype.blit = function()
 	
 	
 	// console.log(this.grid.grid)
-	for(var row =0; row < this.grid.get().length; row++){
-		for(var tile = 0; tile < this.grid.get()[row].length; tile++){
+	// for(var row =0; row < this.grid.get().length; row++){
+	// 	for(var tile = 0; tile < this.grid.get()[row].length; tile++){
 			
-			if(this.grid.get()[row][tile]){
-				// console.log("Drawing at:", row, tile)
+	// 		if(this.grid.get()[row][tile]){
+	// 			// console.log("Drawing at:", row, tile)
 
-				this.ctx.beginPath();
-		    	this.ctx.rect(tile * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-		    	this.ctx.stroke();
+	// 			this.ctx.beginPath();
+	// 	    	this.ctx.rect(tile * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
+	// 	    	this.ctx.stroke();
 
-		    }
+	// 	    }
 
-		} 
-	}
+	// 	} 
+	// }
 }
 
 
