@@ -4,7 +4,7 @@ var Tetris = function(container)
 
 	this.tileSize = 30;
 	this.columns = 10;
-	this.rows = 16;
+	this.rows = 20;
 	this.width = this.tileSize * this.columns;
 	this.height = this.tileSize * this.rows;
 
@@ -108,7 +108,7 @@ Tetris.prototype.blit = function()
 					if(matrix[tileRow][tile]){
 						this.drawTile(tetromino.x + tile * this.tileSize, tetromino.y + tileRow * this.tileSize, tetromino.colour);
 					}
-				
+			
 				}
 
 			}
@@ -117,29 +117,23 @@ Tetris.prototype.blit = function()
 
 	
 	
-	// // console.log(this.grid.grid)
-	// for(var row =0; row < this.grid.get().length; row++){
-	// 	for(var tile = 0; tile < this.grid.get()[row].length; tile++){
+	// console.log(this.grid.grid)
+	for(var row =0; row < this.grid.get().length; row++){
+		for(var tile = 0; tile < this.grid.get()[row].length; tile++){
 			
-	// 		if(this.grid.get()[row][tile]){
-	// 			// console.log("Drawing at:", row, tile)
+			if(this.grid.get()[row][tile]){
+				// console.log("Drawing at:", row, tile)
 
-	// 			this.ctx.beginPath();
-	// 	    	this.ctx.rect(tile * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-	// 	    	this.ctx.stroke();
+				this.ctx.beginPath();
+		    	this.ctx.rect(tile * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
+		    	this.ctx.stroke();
 
-	// 	    }
+		    }
 
-	// 	} 
-	// }
-
-	// this.ctx.font = "14px 'Press Start 2P', cursive";
-	
-	// this.ctx.fillStyle = "#ece4d8";
-
-	// this.ctx.fillText("0",0, 14);
-	// debugger;
+		} 
+	}
 }
+
 
 Tetris.prototype.drawTile = function(x, y, colour){
 
@@ -152,7 +146,7 @@ Tetris.prototype.drawTile = function(x, y, colour){
 Tetris.prototype.keyUpHandler = function (event) 
 {
 
-	var validBindings = [37, 38, 39];
+	var validBindings = [32, 37, 38, 39, 40];
 
 	if(validBindings.contains(event.keyCode))
 		event.preventDefault();	
@@ -166,7 +160,7 @@ Tetris.prototype.keyUpHandler = function (event)
 
 Tetris.prototype.keyDownHandler = function (event) 
 {
-	var validBindings = [ 37, 38, 39];
+	var validBindings = [32, 37, 38, 39, 40];
 	var self = this;
 
 	if(validBindings.contains(event.keyCode) && !this.pressedkeys.contains(event.keyCode)){
@@ -190,9 +184,9 @@ Tetris.prototype.keyLoop = function(){
 	
 	for (key in this.pressedkeys){
 		switch(this.pressedkeys[key]){
-			// case 32:
-			// 	this.keySpace();
-			// 	break;
+			case 32:
+				this.keySpace();
+				break;
 			case 37:
 				this.keyLeft();
 				break;
@@ -203,10 +197,10 @@ Tetris.prototype.keyLoop = function(){
 			case 39:
 				this.keyRight();
 				break;
-			// case 40:
-			// 	this.keyDown();
-			// 	this.pressedkeys.splice(this.pressedkeys.indexOf(40), 1);
-			// 	break;	
+			case 40:
+				this.keyDown();
+				this.pressedkeys.splice(this.pressedkeys.indexOf(40), 1);
+				break;	
 		}
 	}	
 }

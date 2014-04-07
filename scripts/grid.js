@@ -84,7 +84,7 @@ Grid.prototype.dropTetrominoWithId = function(id){
 		// console.log("Can't be pushed")
 
 		tetromino.setY(tetromino.getY() - tetromino.getVolosity());
-		tetromino.isMoveable = false;
+		this.tetrominoCollisionHandler(tetromino);
 
 		// this.checkBlockIntergrity();
 
@@ -153,14 +153,15 @@ Grid.prototype.rotateTetrominoWithId = function(id){
 	if((tetromino = this.getTetrominoWithId(id)) == false)
 		return false;
 
+	this.ungridTetromino(tetromino);
 	tetromino.rotateRight();
 
-	if(this.tetrominoCanBePushedToGrid(tetromino, id)){
-		this.ungridTetromino(tetromino);
-		this.gridTetromino(id);
-	} else {
+	if(!this.tetrominoCanBePushedToGrid(tetromino, id)){
 		tetromino.rotateLeft();
 	}
+
+	this.gridTetromino(id);
+
 	return true;
 }
  
@@ -204,12 +205,8 @@ Grid.prototype.ungridTetromino = function(tetromino)
 				this.set(tetromino.row + row, tetromino.column + column, false);
 			
 			}
-		
 		}
 	}
-
-	// console.log("Ungrided Tetromino")
-	// console.log(this.grid)
 }
 
 Grid.prototype.getTetrominoWithPosition = function(row,column)
@@ -233,11 +230,10 @@ Grid.prototype.confineTetromino = function(tetromino){
 	
 	// debugger;	
 	
-	if (tetromino.row + tetromino.matrix.length >= this.grid.length) {
+	if (tetromino.y + tetromino.matrix.length * this.tileSize >= this.grid.length * this.tileSize) {
 
 		tetromino.setY(this.grid.length * this.tileSize - tetromino.matrix.length * this.tileSize);
-		tetromino.isMoveable = false;
-		
+		this.tetrominoCollisionHandler(tetromino);
 		// console.log("Tetromino hit bottom")
 
 	}	
@@ -276,27 +272,32 @@ Grid.prototype.checkBlockIntergrity = function(){
 		if (total == 10){
 			 this.grid.splice(row,1);
 			 this.grid.insert(0,[0,0,0,0,0,0,0,0,0,0]);
+
+
+			 for(var i = 0; i < this.tetrominos.length; i++)
+			 {
+			 	if(this.tetrominos[i].row < row)
+			 	{
+
+			 		this.tetrominos[i].setRow(this.tetrominos[i].getRow() + 1);
+
+			 	}
+
+			 }
 		}
-
-
 	}
+}
+
+Grid.prototype.tetrominoCollisionHandler = function(tetromino){
+	
+	tetromino.immobilise();
+	this.checkBlockIntergrity();
+
 }
 
 Grid.prototype.tetrominoCanBePushedToGrid = function(tetromino, id){
 
-	// console.log("Checking whether tetromino can be pushed to grid")
-
 	this.confineTetromino(tetromino);
-
-	// for (var r = 0; r < this.grid.length; r++) {
-	// 	out = ""
-	// 	for (var c = 0; c < this.grid[r].length; c++) {
-	// 		out += " " + this.grid[r][c];
-	// 	};
-	// 	console.log(out);
-	// };
-
-	// console.log(this.get())
 
 	for (var row = 0; row < tetromino.matrix.length; row++) 
 	{
@@ -305,13 +306,7 @@ Grid.prototype.tetrominoCanBePushedToGrid = function(tetromino, id){
 
 			if(tetromino.matrix[row][column]){
 						
-
-
-				// console.log("Trying:" ,tetromino.row + row, tetromino.column + column, " - ", this.get(tetromino.row + row, tetromino.column + column))
-
 				var v = this.get(tetromino.row + row, tetromino.column + column);
-				// debugger;
-				
 				if(v != false && v != id || v != false && id == undefined){
 					return false;
 				}

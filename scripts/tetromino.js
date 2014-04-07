@@ -3,7 +3,7 @@ var names = ['square', "inverse skew","gamma","right gun","tee","skew","straight
 var Tetromino = function(x, y, type, size) {
 
 	this.matrix = false;
-	this.volosity = 2;
+	this.volosity = 15;
 
 	this.x = size * Math.floor(Math.random() * 7);
 	this.y = y;
@@ -12,8 +12,6 @@ var Tetromino = function(x, y, type, size) {
 
 	this.row = 0;
 	this.column = parseInt(this.x / size);
-
-	this.isMoveable = true;
 	
 	this.colour = "#FFFFFF";
 
@@ -22,6 +20,16 @@ var Tetromino = function(x, y, type, size) {
 		
 	this.setType(type);
 
+	this.mobilise();
+
+}
+
+Tetromino.prototype.immobilise = function() {
+	this.isMoveable = false;
+}
+
+Tetromino.prototype.mobilise = function() {
+	this.isMoveable = true;
 }
 
 Tetromino.prototype.getVolosity = function() {
@@ -37,6 +45,7 @@ Tetromino.prototype.setY = function(y) {
 	this.row = Math.ceil(this.y / this.size);
 }
 
+
 Tetromino.prototype.setX = function(x) {
 	this.x = x;
 	this.column = parseInt(this.x / this.size);
@@ -48,6 +57,25 @@ Tetromino.prototype.getY = function() {
 
 Tetromino.prototype.getX = function() {
 	return this.x;
+}
+
+Tetromino.prototype.setColumn = function(column) {
+	this.column = column;
+	this.x = parseInt(this.column * this.size);
+}
+
+Tetromino.prototype.setRow = function(row) {
+	this.row = row;
+	this.y = parseInt(this.row * this.size);
+}
+
+
+Tetromino.prototype.getRow = function() {
+	return this.row;
+}
+
+Tetromino.prototype.getColumn = function() {
+	return this.column;
 }
 
 Tetromino.prototype.getMatrix = function() {
