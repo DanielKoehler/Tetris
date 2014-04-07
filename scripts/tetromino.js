@@ -3,7 +3,7 @@ var names = ['square', "inverse skew","gamma","right gun","tee","skew","straight
 var Tetromino = function(x, y, type, size) {
 
 	this.matrix = false;
-	this.volosity = 15;
+	this.volosity = 8;
 
 	this.x = size * Math.floor(Math.random() * 7);
 	this.y = y;
