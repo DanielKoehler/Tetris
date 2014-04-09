@@ -5,6 +5,9 @@ var Tetris = function(container)
 	this.tileSize = 30;
 	this.columns = 10;
 	this.rows = 20;
+
+	this.standardVolosity = 1;
+
 	this.width = this.tileSize * this.columns;
 	this.height = this.tileSize * this.rows;
 
@@ -44,32 +47,26 @@ Tetris.prototype.mainloop = function()
 {
 
 	// console.log('\n\n #### Mainloop #### \n\n')
-	this.equaliseTetrominos();
-	// Blit
-	this.blit();
-	// Detect Colsions
-
-	// debugger;
-}
-
-Tetris.prototype.equaliseTetrominos = function()
-{
-	
-	// console.log(this.target);
-	// console.log("Active tetromino", this.target);
 
 	if(this.target != undefined && this.grid.getTetrominoWithId(this.target).isMoveable){
 		// console.log("Dropping active tetromino")
 		this.grid.dropTetrominoWithId(this.target);
+		
 	} else {
 
 		// console.log("Adding a new tetromino")
-		if((this.target = this.grid.addTetromino(new Tetromino(0, 0, null, this.tileSize))) == false){
+		if((this.target = this.grid.addTetromino(new Tetromino(0, 0, null, this.tileSize, this.standardVolosity))) == false){
 			// console.log("Couldn't add tetromino")
 			this.faillevel()
 		}
 
 	}
+
+	// Blit
+	this.blit();
+	// Detect Colsions
+
+	// debugger;
 }
 
 Tetris.prototype.faillevel = function()
@@ -118,20 +115,46 @@ Tetris.prototype.blit = function()
 	
 	
 	// console.log(this.grid.grid)
-	// for(var row =0; row < this.grid.get().length; row++){
-	// 	for(var tile = 0; tile < this.grid.get()[row].length; tile++){
+	for(var row =0; row < this.grid.get().length; row++){
+		for(var tile = 0; tile < this.grid.get()[row].length; tile++){
 			
-	// 		if(this.grid.get()[row][tile]){
-	// 			// console.log("Drawing at:", row, tile)
+			if(this.grid.get()[row][tile]){
+				// console.log("Drawing at:", row, tile)
 
-	// 			this.ctx.beginPath();
-	// 	    	this.ctx.rect(tile * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-	// 	    	this.ctx.stroke();
+				this.ctx.beginPath();
+		    	this.ctx.rect(tile * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
+		    	this.ctx.stroke();
 
-	// 	    }
+		    }
 
-	// 	} 
+		} 
+	}
+
+
+
+
+	// var grid = this.grid.get();
+
+	// console.clear();
+
+	// for(var row = 0; row < grid.length; row++)
+	// {
+
+	// 	var output = "";
+
+	// 	for(var column = 0; column < grid[0].length; column++)
+	// 	{
+
+	// 		output += " " + (grid[row][column] ? grid[row][column] : 0);
+
+	// 	}
+
+	// 	console.log(output)
+
 	// }
+
+
+
 }
 
 
@@ -149,7 +172,8 @@ Tetris.prototype.keyUpHandler = function (event)
 	var validBindings = [32, 37, 38, 39, 40];
 
 	if(validBindings.contains(event.keyCode))
-		event.preventDefault();	
+		event.preventDefault();
+		this.keyLoopEnd(event.keyCode);
 		this.pressedkeys.splice(this.pressedkeys.indexOf(event.keyCode), 1);
 
 	if(!this.pressedkeys.length){
@@ -178,6 +202,22 @@ Tetris.prototype.keyDownHandler = function (event)
 
 // The keydown event simply doesn't fire often enough, 
 // we're going to have to call the methods ourselves and just wait for key up.
+
+Tetris.prototype.keyLoopEnd = function(key){
+	switch(key){
+		case 32:
+			break;
+		case 37:
+			break;
+		case 38:
+			break;
+		case 39:
+			break;
+		case 40:
+			this.keyDownEnd();
+			break;	
+	}	
+}
 
 Tetris.prototype.keyLoop = function(){
 
@@ -213,10 +253,16 @@ Tetris.prototype.keySpace = function()
 
 Tetris.prototype.keyDown = function()
 {
-	if(this.grid.dropTetrominoWithId(this.target)){
-		this.blit();
+	if((tetromino = this.grid.getTetrominoWithId(this.target)) != false){
+		tetromino.setVolosity(this.standardVolosity * 3);
 	}
-	// Down falling speed
+}
+
+Tetris.prototype.keyDownEnd = function()
+{
+	if((tetromino = this.grid.getTetrominoWithId(this.target)) != false){
+		tetromino.setVolosity(this.standardVolosity);
+	}
 }
 
 Tetris.prototype.keyUp = function()

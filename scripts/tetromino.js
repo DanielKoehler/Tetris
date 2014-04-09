@@ -1,9 +1,9 @@
 var names = ['square', "inverse skew","gamma","right gun","tee","skew","straight"];
 
-var Tetromino = function(x, y, type, size) {
+var Tetromino = function(x, y, type, size, volosity) {
 
 	this.matrix = false;
-	this.volosity = 8;
+	this.volosity = volosity;
 
 	this.x = size * Math.floor(Math.random() * 7);
 	this.y = y;
@@ -36,6 +36,10 @@ Tetromino.prototype.mobilise = function() {
 
 Tetromino.prototype.getVolosity = function() {
 	return this.volosity;
+}
+
+Tetromino.prototype.setVolosity = function(volosity) {
+	this.volosity = volosity;
 }
 
 Tetromino.prototype.getMatrix = function() {

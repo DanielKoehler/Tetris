@@ -276,7 +276,7 @@ Grid.prototype.checkBlockIntergrity = function(){
 
 			 for(var i = 0; i < this.tetrominos.length; i++)
 			 {
-			 	if(this.tetrominos[i].row < row)
+			 	if(this.tetrominos[i].row <= row)
 			 	{
 
 			 		this.tetrominos[i].setRow(this.tetrominos[i].getRow() + 1);
