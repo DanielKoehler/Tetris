@@ -1,7 +1,7 @@
 Tetris
 ======
 
-SUMMARY
+Summary
 
 	Demo: danielkoehler.github.io/Tetris	
 	Version: 0.1 (Alpha)
@@ -9,6 +9,7 @@ SUMMARY
 	Contact:me@danielkoehler.co.uk
 	
 An open source HTML 5 friendly version of Tetris.
+
 Made just for fun. Play it [here](http://danielkoehler.github.io/Tetris)!
 
 
